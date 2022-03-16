@@ -15,7 +15,6 @@ max_steps_per_episode = 20000
 env = gym.make('MountainCar-v0')
 env.seed(seed)
 
-
 # Neural Network
 num_inputs = 2
 num_actions = 3
@@ -37,6 +36,7 @@ rewards_history = []
 running_reward = 0
 episode_count = 0
 
+# print(env.observation_space)
 
 while True:
     state = env.reset()
@@ -56,7 +56,7 @@ while True:
             action = np.random.choice(num_actions, p=np.squeeze(action_probs))
             action_probs_history.append(tf.math.log(action_probs[0, action]))
 
-            state, reward, done, _ = env.step(action)
+            state, reward, done, _ = env.step(1)
             
             # print(action)
             # print(state)
@@ -66,13 +66,9 @@ while True:
             else:
                 reward = 0
 
-            reward += (abs(state[1])) ** 3
-
-            if state[0] > - 1:
-                r = (state[0] + 1) ** 2
-                reward += r
-            # elif state[0] < -0.7:
-            #     reward += 1
+            # if state[1] > -0.4:
+            #     reward += (10*abs(state[1])) 
+            reward += abs(state[1])
 
             rewards_history.append(reward)
             episode_reward += reward
